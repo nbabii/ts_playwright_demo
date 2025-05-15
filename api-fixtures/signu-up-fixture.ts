@@ -8,6 +8,8 @@ type SignUpFixtures = {
 export const test = base.extend<SignUpFixtures>({
   signUpUser: async ({ request }, use) => {
     const signUpUser = async (userInfo) => {
+      const time = new Date().toISOString()
+
       const signUpResponse = await request.post('http://localhost:3000/api/Users/', {
         data: {
           email: userInfo.email,
@@ -16,8 +18,8 @@ export const test = base.extend<SignUpFixtures>({
           securityQuestion: {
             id: 2,
             question: "Mother's maiden name?",
-            createdAt: "2025-05-14T15:02:23.931Z",
-            updatedAt: "2025-05-14T15:02:23.931Z"
+            createdAt: time,
+            updatedAt: time
           }
         }
       });
