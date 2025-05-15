@@ -21,8 +21,6 @@ test.describe('Test user log in flow', () => {
 
     const user = await signUpUser(userInfo);
 
-    console.log(user)
-
     let loginPage = new LoginPage(page);
     await loginPage.open();
     await loginPage.closeWlcmBannerIfPresent();
