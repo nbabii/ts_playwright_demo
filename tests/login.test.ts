@@ -8,7 +8,7 @@ import { LoginPage } from '../pages/login-page';
 
 test.describe('Test user log in flow', () => {
 
-  test.only('main page opened and user can navigate to sign up', async ({ signUpUser, browser }) => {
+  test('user can login with existed valid credentials', async ({ signUpUser, browser }) => {
     const context = await browser.newContext();
     const page = await context.newPage();
 
@@ -19,12 +19,19 @@ test.describe('Test user log in flow', () => {
       answer: "sdet"
     }
 
-    const user = await signUpUser(userInfo);
+    console.log(userInfo);
+
+    await signUpUser(userInfo);
 
     let loginPage = new LoginPage(page);
     await loginPage.open();
     await loginPage.closeWlcmBannerIfPresent();
+
+    await expect(loginPage.getLogInBtn).toBeDisabled();
+
+    let mainPage = await loginPage.loginUser(userInfo);
+
+    expect(await mainPage.getHeaderComponent().isUserLoggedIn()).toBeTruthy();
     
-    await page.waitForTimeout(5000)
   });
 });
