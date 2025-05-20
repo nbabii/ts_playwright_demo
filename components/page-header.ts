@@ -6,16 +6,16 @@ export class HeaderComponent extends BasePage {
   readonly getAccountMenuBtn: Locator;
   readonly getLoginBtn: Locator;
   readonly getLogoutBtn: Locator;
+  readonly getSearchBtn: Locator;
+  readonly getSearchInput: Locator;
 
   constructor(page: Page) {
     super(page);
     this.getAccountMenuBtn = page.locator('button#navbarAccount');
     this.getLoginBtn = page.locator('button#navbarLoginButton');
     this.getLogoutBtn = page.locator('button#navbarLogoutButton');
-  }
-
-  async open() {
-    await this.page.goto('/');
+    this.getSearchBtn = page.locator('mat-icon.mat-search_icon-search');
+    this.getSearchInput = page.locator('input#mat-input-1');
   }
 
   async navigateToLogin() : Promise<LoginPage> {
@@ -32,5 +32,11 @@ export class HeaderComponent extends BasePage {
         && await this.getLogoutBtn.isVisible();
     
     return isLoggedIn;
+  }
+
+  async searchItem(itemName: string) {
+    await this.getSearchBtn.click();
+    await this.getSearchInput.fill(itemName);
+    await this.getSearchInput.press('Enter');
   }
 }

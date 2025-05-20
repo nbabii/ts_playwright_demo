@@ -1,4 +1,4 @@
-const Chance = require('chance');
+import Chance from 'chance';
 const chance = new Chance();
 
 import { test, expect } from '@playwright/test';
@@ -11,12 +11,12 @@ test.describe('Test user sign_up flow', () => {
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    let mainPage = new MainShopPage(page);
+    const mainPage = new MainShopPage(page);
     await mainPage.open();
     await mainPage.closeWlcmBannerIfPresent();
 
-    let loginPage = await mainPage.getHeaderComponent().navigateToLogin();
-    let signupPage = await loginPage.navigateToSignUp();
+    const loginPage = await mainPage.getHeaderComponent().navigateToLogin();
+    const signupPage = await loginPage.navigateToSignUp();
 
     await expect(signupPage.getEmailInput).toBeEnabled();
 
@@ -26,9 +26,9 @@ test.describe('Test user sign_up flow', () => {
   });
 
   test('user can fill signup form with correct data and register', async ({ page }) => {
-    let signupPage = new SignupPage(page);
+    const signupPage = new SignupPage(page);
 
-    let userInfo = {
+    const userInfo = {
       email: chance.email({ domain: 'nazartest.com' }),
       password: chance.string({ length: 8 }),
       question: "Mother's maiden name?",

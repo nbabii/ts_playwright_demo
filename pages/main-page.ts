@@ -1,6 +1,7 @@
 import { BasePage } from './base-page';
 import { HeaderComponent } from '../components/page-header';
-import { type Locator, type Page } from '@playwright/test';
+import { ProductItemComponent } from '../components/product-item-box';
+import { type Page } from '@playwright/test';
 
 export class MainShopPage extends BasePage {
 
@@ -10,6 +11,10 @@ export class MainShopPage extends BasePage {
 
   getHeaderComponent() : HeaderComponent {
     return new HeaderComponent(this.page);
+  }
+
+  getProductItemComponent() : ProductItemComponent {
+    return new ProductItemComponent(this.page);
   }
 
   async open() {

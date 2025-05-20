@@ -1,4 +1,4 @@
-const Chance = require('chance');
+import Chance from 'chance';
 const chance = new Chance();
 
 import { test, expect } from '../api-fixtures/signu-up-fixture';
@@ -12,26 +12,46 @@ test.describe('Test user log in flow', () => {
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    let userInfo = {
+    const userInfo = {
       email: chance.email({ domain: 'nazartest.com' }),
       password: chance.string({ length: 8 }),
       question: "Mother's maiden name?",
       answer: "sdet"
     }
 
-    console.log(userInfo);
-
     await signUpUser(userInfo);
 
-    let loginPage = new LoginPage(page);
+    const loginPage = new LoginPage(page);
     await loginPage.open();
-    await loginPage.closeWlcmBannerIfPresent();
 
     await expect(loginPage.getLogInBtn).toBeDisabled();
 
-    let mainPage = await loginPage.loginUser(userInfo);
+    const mainPage = await loginPage.loginUser(userInfo);
 
     expect(await mainPage.getHeaderComponent().isUserLoggedIn()).toBeTruthy();
     
+  });
+
+    test('user can NOT login with incorrect credentials', async ({ signUpUser, browser }) => {
+    const context = await browser.newContext();
+    const page = await context.newPage();
+
+    const userInfo = {
+      email: chance.email({ domain: 'nazartest.com' }),
+      password: chance.string({ length: 8 }),
+      question: "Mother's maiden name?",
+      answer: "sdet"
+    }
+
+    await signUpUser(userInfo);
+
+    const loginPage = new LoginPage(page);
+    await loginPage.open();
+
+    userInfo.password += '1';
+
+    await loginPage.loginUser(userInfo);
+
+    expect(await loginPage.getErrorMsgText(), "Login error message should be visible").toContain('Invalid email or password');
   });
 });

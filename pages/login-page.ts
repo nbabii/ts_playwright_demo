@@ -9,6 +9,7 @@ export class LoginPage extends BasePage {
   readonly getEmailInput: Locator;
   readonly getPasswordInput: Locator;
   readonly getLogInBtn: Locator;
+  readonly getErrorMsg: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -16,6 +17,7 @@ export class LoginPage extends BasePage {
     this.getEmailInput = page.locator('input#email');
     this.getPasswordInput = page.locator('input#password');
     this.getLogInBtn = page.locator('button#loginButton');
+    this.getErrorMsg = page.locator('.error');
   }
 
   getHeaderComponent() : HeaderComponent {
@@ -24,6 +26,7 @@ export class LoginPage extends BasePage {
 
   async open() {
     await this.page.goto('/#/login');
+    await this.closeWlcmBannerIfPresent();
   }
 
   async loginUser(userInfo) : Promise<MainShopPage> {
@@ -38,5 +41,9 @@ export class LoginPage extends BasePage {
     await this.getRegisterBtn.click();
 
     return new SignupPage(this.page);
+  }
+
+  async getErrorMsgText() : Promise<string> {
+    return await this.getErrorMsg.innerText();
   }
 }

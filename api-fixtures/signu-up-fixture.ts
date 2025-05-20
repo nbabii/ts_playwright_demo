@@ -2,7 +2,7 @@ import { test as base } from '@playwright/test';
 
 
 type SignUpFixtures = {
-  signUpUser: (userInfo) => Promise<{}>;
+  signUpUser: (userInfo) => Promise<object>;
 };
 
 export const test = base.extend<SignUpFixtures>({
@@ -28,7 +28,7 @@ export const test = base.extend<SignUpFixtures>({
         throw new Error(`Users request failed: ${await signUpResponse.text()}`);
       }
 
-      let signUpBody = await signUpResponse.json();
+      const signUpBody = await signUpResponse.json();
 
       const answerResponse = await request.post('http://localhost:3000/api/SecurityAnswers/', {
         data: {
@@ -41,6 +41,8 @@ export const test = base.extend<SignUpFixtures>({
       if (!answerResponse.ok()) {
         throw new Error(`SecurityAnswers request failed: ${await answerResponse.text()}`);
       }
+
+      console.log(userInfo);
 
       return userInfo;
     };
