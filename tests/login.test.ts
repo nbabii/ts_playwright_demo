@@ -53,5 +53,6 @@ test.describe('Test user log in flow', () => {
     await loginPage.loginUser(userInfo);
 
     expect(await loginPage.getErrorMsgText(), "Login error message should be visible").toContain('Invalid email or password');
+    
   });
 });
