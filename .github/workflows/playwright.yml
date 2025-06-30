@@ -22,7 +22,7 @@ jobs:
       run: npm ci
 
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: npx playwright install chromium
 
     - name: Clone Juice Shop
       run: git clone https://github.com/nbabii/juice-shop.git --depth 1

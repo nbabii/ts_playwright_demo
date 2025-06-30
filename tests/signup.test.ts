@@ -20,8 +20,9 @@ test.describe('Test user sign_up flow', () => {
 
     await expect(signupPage.getEmailInput).toBeEnabled();
 
-    expect(await page.screenshot()).toMatchSnapshot('signupPage.png', {
+    await expect(page).toHaveScreenshot('signupPage.png', {
       maxDiffPixelRatio: 0.07,
+      timeout: 5000
     });
   });
 
@@ -41,8 +42,9 @@ test.describe('Test user sign_up flow', () => {
 
     await expect(page.getByText('Registration completed successfully. You can now log in.')).toBeInViewport();
 
-    expect(await page.screenshot()).toMatchSnapshot('registrationCompleted.png', {
+    await expect(page).toHaveScreenshot('registrationCompleted.png', {
       maxDiffPixelRatio: 0.07,
+      timeout: 5000
     });
   });
 });
