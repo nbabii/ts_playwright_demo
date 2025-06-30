@@ -1,8 +1,9 @@
 import { test as base } from '@playwright/test';
+import { UserInfo } from '../types/user.types';
 
 
 type SignUpFixtures = {
-  signUpUser: (userInfo) => Promise<object>;
+  signUpUser: (userInfo: UserInfo) => Promise<object>;
 };
 
 export const test = base.extend<SignUpFixtures>({

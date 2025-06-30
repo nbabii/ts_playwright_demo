@@ -3,6 +3,7 @@ import { HeaderComponent } from '../components/page-header';
 import { type Locator, type Page } from '@playwright/test';
 import { MainShopPage } from './main-page';
 import { SignupPage } from './signup-page';
+import { UserInfo } from '../types/user.types';
 
 export class LoginPage extends BasePage {
   readonly getRegisterBtn: Locator;
@@ -29,7 +30,7 @@ export class LoginPage extends BasePage {
     await this.closeWlcmBannerIfPresent();
   }
 
-  async loginUser(userInfo) : Promise<MainShopPage> {
+  async loginUser(userInfo: UserInfo) : Promise<MainShopPage> {
     await this.getEmailInput.fill(userInfo.email);
     await this.getPasswordInput.fill(userInfo.password);
     await this.getLogInBtn.click();

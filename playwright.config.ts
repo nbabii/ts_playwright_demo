@@ -14,7 +14,7 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   timeout: 30_000,
   expect: {
-    timeout: 10_000,
+    timeout: 5_000,
   },
   testDir: './tests',
   /* Run tests in files in parallel */
@@ -42,7 +42,12 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        launchOptions: {
+          //slowMo: 500,
+        },  
+       },
     }
 
     // {
