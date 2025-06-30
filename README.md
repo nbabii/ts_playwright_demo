@@ -1,16 +1,61 @@
 # Playwright Demo Project
-Demo project based on the Playwright, TypeScript, and Node.js v22+.  
-As application under test was used [OWASP testing web app](https://github.com/juice-shop/juice-shop) which could be easily setup locally, and provides a possibility build UI and API tests.
 
-## Local execution
-Download and install Node.js v22 from [Nodejs.org](https://nodejs.org/en/download)
+This project is a demonstration of using Playwright with TypeScript and Node.js v22+ for automated testing. It tests the [OWASP Juice Shop](https://github.com/juice-shop/juice-shop).
 
-To setup application under test, to be available on your localhost, please clone repo [OWASP juice-shop](https://github.com/juice-shop/juice-shop). And follow the steps under the setup from sources section - https://github.com/juice-shop/juice-shop?tab=readme-ov-file#setup. After setup done and app process is running you should be able to open app using URL - http://localhost:3000.  
+## Project Structure
 
-To start test run execution:  
-1. Clone this repo, and `cd` to project root folder.
-2. Install project dependencies using `npm install`
-3. Install playwright with browsers using `npx playwright install --with-deps`
-4. Start execution of all tests using `npx playwright test`  
+```
+api-fixtures/         # Contains API-related fixtures for tests
+ui-fixtures/          # Contains UI-related fixtures for tests
+components/           # Reusable UI components like page headers etc.
+pages/                # Page Object Models for different pages in the application
+tests/                # Contains test scripts
+types/                # TypeScript type definitions
+```
+
+## Local Execution
+
+1. **Setup Application Under Test**:
+   - Clone the [OWASP Juice Shop](https://github.com/juice-shop/juice-shop) repository.
+   - Follow the setup instructions in the repository to run the application locally.
+   - Ensure the application is accessible at `http://localhost:3000`.
+
+2. **Setup This Project**:
+   - Clone this repository and navigate to the project root folder.
+   - Install dependencies:
+     ```bash
+     npm install
+     ```
+   - Install Playwright and browsers:
+     ```bash
+     npx playwright install --with-deps
+     ```
+
+3. **Run Tests**:
+   - Execute all tests:
+     ```bash
+     npx playwright test
+     ```
+
+## GitHub Actions CI
+
+This project uses GitHub Actions to automatically run Playwright tests on every push and pull request to the `main` branch. The workflow is defined in `.github/workflows/playwright.yml` and includes the following steps:
+
+- **Checkout code**: Uses the latest code from the repository.
+- **Setup Node.js**: Installs the latest LTS version of Node.js.
+- **Install dependencies**: Runs `npm ci` to install project dependencies.
+- **Install Playwright browsers**: Installs the Chromium browser for testing.
+- **Clone and start Juice Shop**: Clones the Juice Shop repository, installs its dependencies, and starts the server. Waits until the app is available at `http://localhost:3000`.
+- **Run Playwright tests**: Executes all Playwright tests in CI mode.
+- **Publish JUnit summary**: Publishes a JUnit test summary to the GitHub PR.
+- **Upload Playwright report**: Uploads the Playwright HTML report as a workflow artifact for later review if there were failed tests.
+
+This ensures that all tests are run in a clean environment and results are available for every code change.
+
+## Additional Notes
+
+- Test reports are generated in the `playwright-report/` folder.
+- Snapshots for visual regression testing are stored in the `tests/signup.test.ts-snapshots/` folder.
+- The project is designed to be modular, with reusable components and page objects.
 
 
