@@ -7,10 +7,7 @@ import { SignupPage } from '../pages/signup-page';
 
 test.describe('Test user sign_up flow', () => {
 
-  test('main page opened and user can navigate to sign up', async ({ browser }) => {
-    const context = await browser.newContext();
-    const page = await context.newPage();
-
+  test('main page opened and user can navigate to sign up', async ({ page }) => {
     const mainPage = new MainShopPage(page);
     await mainPage.open();
     await mainPage.closeWlcmBannerIfPresent();

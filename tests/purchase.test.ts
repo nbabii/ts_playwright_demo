@@ -1,7 +1,7 @@
 import Chance from 'chance';
 const chance = new Chance();
 
-import { test, expect } from '../api-fixtures/signu-up-fixture';
+import { test, expect } from '../api-fixtures/signup-fixture';
 
 import { LoginPage } from '../pages/login-page';
 import { UserInfo } from '../types/user.types';
@@ -9,10 +9,7 @@ import { UserInfo } from '../types/user.types';
 
 test.describe('E2E: User item purchase flow', () => {
 
-  test('should allow user to add items to basket, and purchase', async ({ signUpUser, browser }) => {
-    const context = await browser.newContext();
-    const page = await context.newPage();
-
+  test('should allow user to add items to basket, and purchase', async ({ signUpUser, page }) => {
     const userInfo: UserInfo = {
       email: chance.email({ domain: 'nazartest.com' }),
       password: chance.string({ length: 8 }),

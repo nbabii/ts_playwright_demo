@@ -1,4 +1,4 @@
-import { test as base } from '@playwright/test';
+import { test as base } from '../base/base-fixtures';
 import { UserInfo } from '../types/user.types';
 
 

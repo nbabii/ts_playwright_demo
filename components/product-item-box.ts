@@ -1,4 +1,4 @@
-import { BasePage } from '../pages/base-page';
+import { BasePage } from '../base/base-page';
 import { type Locator, type Page } from '@playwright/test';
 
 export class ProductItemComponent extends BasePage {

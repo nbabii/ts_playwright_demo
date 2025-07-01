@@ -1,4 +1,4 @@
-import { BasePage } from './base-page';
+import { BasePage } from '../base/base-page';
 import { HeaderComponent } from '../components/page-header';
 import { type Page } from '@playwright/test';
 

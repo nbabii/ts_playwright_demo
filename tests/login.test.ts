@@ -1,17 +1,14 @@
 import Chance from 'chance';
 const chance = new Chance();
 
-import { test, expect } from '../api-fixtures/signu-up-fixture';
+import { test, expect } from '../api-fixtures/signup-fixture';
 
 import { LoginPage } from '../pages/login-page';
 
 
 test.describe('Test user log in flow', () => {
 
-  test('user can login with existed valid credentials', async ({ signUpUser, browser }) => {
-    const context = await browser.newContext();
-    const page = await context.newPage();
-
+  test('user can login with existed valid credentials', async ({ signUpUser, page }) => {
     const userInfo = {
       email: chance.email({ domain: 'nazartest.com' }),
       password: chance.string({ length: 8 }),
@@ -32,10 +29,7 @@ test.describe('Test user log in flow', () => {
     
   });
 
-    test('user can NOT login with incorrect credentials', async ({ signUpUser, browser }) => {
-    const context = await browser.newContext();
-    const page = await context.newPage();
-
+    test('user can NOT login with incorrect credentials', async ({ signUpUser, page }) => {
     const userInfo = {
       email: chance.email({ domain: 'nazartest.com' }),
       password: chance.string({ length: 8 }),
