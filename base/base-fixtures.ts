@@ -5,6 +5,20 @@ type BaseFixtures = {
 };
 
 export const test = base.extend<BaseFixtures>({
+    page: async ({ context, page }, use) => {
+        await context.addCookies([
+            {
+                name: 'cookieconsent_status',
+                value: 'dismiss',
+                domain: 'localhost',
+                path: '/',
+                httpOnly: false,
+                secure: false,
+            }
+        ]);
+            
+        await use(page);
+    },
     autoTimeLoggerFixture: [
         async ({}, use) => {
             test.info().annotations.push({
