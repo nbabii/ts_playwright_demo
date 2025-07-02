@@ -1,11 +1,11 @@
 import { test as base } from '@playwright/test';
 
 type BaseFixtures = {
-  autoLoggerFixture: void;
+  autoTimeLoggerFixture: void;
 };
 
 export const test = base.extend<BaseFixtures>({
-    autoLoggerFixture: [
+    autoTimeLoggerFixture: [
         async ({}, use) => {
             test.info().annotations.push({
                 type: 'Test Start',
@@ -19,7 +19,8 @@ export const test = base.extend<BaseFixtures>({
                 description: new Date().toISOString(),
             });
         },
-    { auto: true }],
+        { auto: true }
+    ],
 });
 
 export { expect } from '@playwright/test';

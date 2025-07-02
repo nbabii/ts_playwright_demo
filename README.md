@@ -7,7 +7,7 @@ This project is a demonstration of using Playwright with TypeScript and Node.js 
 ```
 api-fixtures/         # Contains API-related fixtures for tests
 ui-fixtures/          # Contains UI-related fixtures for tests
-base/                 # Base components used by over the framework
+base/                 # Base components used all over the framework
 components/           # Reusable UI components like page headers etc.
 pages/                # Page Object Models for different pages in the application
 tests/                # Contains test scripts

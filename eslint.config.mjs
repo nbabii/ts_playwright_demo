@@ -4,6 +4,19 @@ import { defineConfig } from "eslint/config";
 
 
 export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs,ts}"], languageOptions: { globals: globals.browser } },
+  {
+    ignores: [
+      "node_modules",
+      ".env",
+      "playwright-report",
+      "test-results"
+    ]
+  },
+  {
+    files: ["**/*.{js,mjs,cjs,ts}"],
+    languageOptions: {
+      globals: globals.browser
+    }
+  },
   tseslint.configs.recommended,
 ]);

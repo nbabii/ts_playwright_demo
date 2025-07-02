@@ -4,7 +4,8 @@ const chance = new Chance();
 import { test, expect } from '../api-fixtures/signup-fixture';
 
 import { LoginPage } from '../pages/login-page';
-import { UserInfo } from '../types/user.types';
+import { UserAddress, UserInfo } from '../types/user.types';
+import { DeliveryType } from '../types/enums';
 
 
 test.describe('E2E: User item purchase flow', () => {
@@ -15,6 +16,16 @@ test.describe('E2E: User item purchase flow', () => {
       password: chance.string({ length: 8 }),
       question: "Mother's maiden name?",
       answer: "sdet"
+    }
+
+    const userAddress: UserAddress = {
+      country: 'USA',
+      name: chance.name(),
+      mobile: chance.phone({ country: "us", formatted: false }),
+      zip: chance.zip(),
+      address: chance.address(),
+      city: chance.city(),
+      state: chance.state()
     }
 
     const item1Name = 'Carrot Juice (1000ml)';
@@ -48,7 +59,11 @@ test.describe('E2E: User item purchase flow', () => {
     await expect(basketPage.getItemCount(0)).toHaveText('1');
     await expect(basketPage.getItemCount(1)).toHaveText('1');
 
-    await basketPage.proceedToCheckout();
-    // TODO address and checkout
+    const selectAddressPage = await basketPage.proceedToCheckout();
+    await selectAddressPage.addNewAddress(userAddress);
+    
+    const selectDeliveryPage = await selectAddressPage.selectAddressByNameAndContinue(userAddress.name);
+    await selectDeliveryPage.selectDeliveryByTypeAndContinue(DeliveryType.FAST);
+    // TODO payment selection, page is not implemented yet
   });
 });
