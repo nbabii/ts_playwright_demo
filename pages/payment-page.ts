@@ -2,9 +2,11 @@ import { BasePage } from '../base/base-page';
 import { HeaderComponent } from '../components/page-header';
 import { type Locator, type Page } from '@playwright/test';
 import { PaymentCard } from '../types/user.types';
+import { OrderSummaryPage } from './order-summary-page';
 
 
 export class PaymentOptionsPage extends BasePage {
+  private getSelectPaymentRadio: string = 'mat-row:has-text("PAYMENT") mat-radio-button';
   readonly getAddCardButton: Locator;
   readonly getCardNameInput: Locator;
   readonly getCardNumberInput: Locator;
@@ -39,6 +41,12 @@ export class PaymentOptionsPage extends BasePage {
     await this.getCardExpMonthSelect.selectOption(cardInfo.expirationMonth);
     await this.getCardExpYearSelect.selectOption(cardInfo.expirationYear);
     await this.getSubmitButton.click();
+  }
+
+  async selectPaymentAndContinue(name: string): Promise<OrderSummaryPage> {
+    await this.page.locator(this.getSelectPaymentRadio.replace('PAYMENT', name)).click();
     await this.getContinueButton.click();
+
+    return new PaymentOptionsPage(this.page);
   }
 }

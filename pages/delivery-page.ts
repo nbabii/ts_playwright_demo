@@ -21,7 +21,7 @@ export class SelectDeliveryPage extends BasePage {
     await this.page.goto('/#/delivery-method');
   }
 
-    async selectDeliveryByTypeAndContinue(type: string): Promise<PaymentOptionsPage> {
+  async selectDeliveryByTypeAndContinue(type: string): Promise<PaymentOptionsPage> {
     await this.page.locator(this.getSelectDeliveryRadio.replace('DELIVERY', type)).click();
     await this.getContinueButton.click();
 

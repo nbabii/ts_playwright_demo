@@ -30,7 +30,7 @@ test.describe('E2E: User item purchase flow', () => {
     }
     const cardInfo: PaymentCard = {
       name: chance.name(),
-      number: chance.cc({ length: 16, prefix: '4' }),
+      number: chance.cc({type: 'mc'}),
       expirationMonth: chance.integer({ min: 1, max: 12 }).toString(),
       expirationYear: chance.year({ min: 2080, max: 2090 }).toString()
     }
@@ -69,7 +69,8 @@ test.describe('E2E: User item purchase flow', () => {
     const selectDeliveryPage = await selectAddressPage.selectAddressByNameAndContinue(userAddress.name);
     const paymentOptionsPage = await selectDeliveryPage.selectDeliveryByTypeAndContinue(DeliveryType.FAST);
 
-    await paymentOptionsPage.addNewCard(cardInfo)
-    // TODO card selection and review page, page is not implemented yet
+    await paymentOptionsPage.addNewCard(cardInfo);
+    await paymentOptionsPage.selectPaymentAndContinue(cardInfo.name);
+    // TODO review page, page is not implemented yet
   });
 });
