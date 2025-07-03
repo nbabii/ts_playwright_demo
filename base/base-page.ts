@@ -12,7 +12,9 @@ export abstract class BasePage {
   async closeWlcmBannerIfPresent() {
     try {
       await this.getCloseBannerBtn.waitFor({ state: 'visible', timeout: 3000 });
-    } catch {}
+    } catch {
+      // Ignore if banner is not present
+    }
     if (await this.getCloseBannerBtn.isVisible()) {
       await this.getCloseBannerBtn.click();
     }

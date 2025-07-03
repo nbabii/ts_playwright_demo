@@ -1,5 +1,6 @@
 import { BasePage } from '../base/base-page';
 import { type Locator, type Page } from '@playwright/test';
+import { UserInfo } from '../types/user.types';
 
 export class SignupPage extends BasePage {
   readonly getEmailInput: Locator;
@@ -27,11 +28,12 @@ export class SignupPage extends BasePage {
     await this.getQuestionDropdown.waitFor({ state: 'visible' });
     await this.getQuestionDropdown.click();
     const option = this.page.getByText(value);
+    await option.waitFor({ state: 'visible' });
     await option.click();
 
   }
 
-  async registerUser(userInfo) {
+  async registerUser(userInfo: UserInfo) {
     await this.getEmailInput.fill(userInfo.email);
     await this.getPasswordInput.fill(userInfo.password);
     await this.getConfPasswordInput.fill(userInfo.password);
