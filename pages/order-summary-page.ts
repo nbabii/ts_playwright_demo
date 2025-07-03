@@ -1,6 +1,7 @@
 import { BasePage } from '../base/base-page';
 import { HeaderComponent } from '../components/page-header';
 import { type Page } from '@playwright/test';
+import { step } from '../base/base-fixtures';
 
 
 export class OrderSummaryPage extends BasePage {
@@ -13,6 +14,7 @@ export class OrderSummaryPage extends BasePage {
     return new HeaderComponent(this.page);
   }
 
+  @step('Open order summary page')
   async open() {
     await this.page.goto('/#/order-summary');
   }

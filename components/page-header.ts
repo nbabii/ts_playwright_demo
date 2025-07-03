@@ -2,6 +2,7 @@ import { BasePage } from '../base/base-page';
 import { type Locator, type Page } from '@playwright/test';
 import { LoginPage } from '../pages/login-page';
 import { BasketPage } from '../pages/basket-page';
+import { step } from '../base/base-fixtures';
 
 export class HeaderComponent extends BasePage {
   readonly getAccountMenuBtn: Locator;
@@ -25,6 +26,7 @@ export class HeaderComponent extends BasePage {
     this.getBasketItemsCount = this.getBasketBtn.locator('span.warn-notification');
   }
 
+  @step('Navigate to login page from header')
   async navigateToLogin() : Promise<LoginPage> {
     await this.getAccountMenuBtn.click();
     await this.getLoginBtn.click();
@@ -32,6 +34,7 @@ export class HeaderComponent extends BasePage {
     return new LoginPage(this.page);
   }
 
+  @step('Check if user is logged in from header')
   async isUserLoggedIn() : Promise<boolean> {
     await this.getAccountMenuBtn.click();
     await this.getLogoutBtn.waitFor({ state: 'visible' });
@@ -41,17 +44,20 @@ export class HeaderComponent extends BasePage {
     return isLoggedIn;
   }
 
+  @step('Search for item from header')
   async searchItem(itemName: string) {
     await this.getSearchBtn.click();
     await this.getSearchInput.fill(itemName);
     await this.getSearchInput.press('Enter');
   }
 
+  @step('Close search bar from header')
   async closeSearch() {
     await this.getCloseSearch.click();
     await this.getSearchBtn.waitFor({ state: 'visible', timeout: 2000 });
   }
 
+  @step('Navigate to basket from header')
   async navigateToBasket() : Promise<BasketPage> {
     await this.getBasketBtn.click();
     

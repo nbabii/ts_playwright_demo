@@ -1,6 +1,7 @@
 import { BasePage } from '../base/base-page';
 import { type Locator, type Page } from '@playwright/test';
 import { UserInfo } from '../types/user.types';
+import { step } from '../base/base-fixtures';
 
 export class SignupPage extends BasePage {
   readonly getEmailInput: Locator;
@@ -20,19 +21,21 @@ export class SignupPage extends BasePage {
     this.getRegisterButton = page.locator('button#registerButton');
   }
 
+  @step('Open signup page')
   async open() {
     await this.page.goto('/#/register');
   }
 
+  @step('Select security question')
   async selectQuestion(value: string) {
     await this.getQuestionDropdown.waitFor({ state: 'visible' });
     await this.getQuestionDropdown.click();
     const option = this.page.getByText(value);
     await option.waitFor({ state: 'visible' });
     await option.click();
-
   }
 
+  @step('Register user')
   async registerUser(userInfo: UserInfo) {
     await this.getEmailInput.fill(userInfo.email);
     await this.getPasswordInput.fill(userInfo.password);
