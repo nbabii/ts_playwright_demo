@@ -8,7 +8,7 @@ export type UserInfo = {
 export type UserAddress = {
       country: string;
       name: string;
-      mobile: number;
+      mobile: string;
       zip: string;
       address: string;
       city: string;

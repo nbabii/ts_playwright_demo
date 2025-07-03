@@ -1,22 +1,31 @@
-import globals from "globals";
+import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
-import { defineConfig } from "eslint/config";
 
-
-export default defineConfig([
-  {
-    ignores: [
-      "node_modules",
-      ".env",
-      "playwright-report",
-      "test-results"
-    ]
-  },
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+  
   {
     files: ["**/*.{js,mjs,cjs,ts}"],
     languageOptions: {
-      globals: globals.browser
-    }
+      parserOptions: {
+        project: "tsconfig.json",
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/await-thenable": "error",
+      "no-empty-pattern": "off",
+    },
   },
-  tseslint.configs.recommended,
-]);
+  {
+    ignores: [
+      "node_modules",
+      "playwright-report",
+      "test-results",
+      ".env",
+      "eslint.config.mjs",
+      "juice-shop",
+    ]
+  }
+);

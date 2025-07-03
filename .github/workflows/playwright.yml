@@ -39,7 +39,7 @@ jobs:
         npx wait-on http://localhost:3000
 
     - name: Run Playwright tests
-      run: CI=1 npx playwright test
+      run: CI=1 npm run test
 
     - name: Publish JUnit summary to GitHub PR
       if: always()

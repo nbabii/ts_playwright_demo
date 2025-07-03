@@ -8,7 +8,7 @@ type SignUpFixtures = {
 
 export const test = base.extend<SignUpFixtures>({
   signUpUser: async ({ request }, use) => {
-    const signUpUser = async (userInfo) => {
+    const signUpUser = async (userInfo: UserInfo) => {
       const time = new Date().toISOString()
 
       const signUpResponse = await request.post('http://localhost:3000/api/Users/', {
