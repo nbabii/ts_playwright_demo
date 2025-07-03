@@ -14,3 +14,10 @@ export type UserAddress = {
       city: string;
       state: string;
 }
+
+export type PaymentCard = {
+      name: string;
+      number: string;
+      expirationMonth: string;
+      expirationYear: string;
+}

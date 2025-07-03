@@ -4,20 +4,21 @@ const chance = new Chance();
 import { test, expect } from '../api-fixtures/signup-fixture';
 
 import { LoginPage } from '../pages/login-page';
-import { UserAddress, UserInfo } from '../types/user.types';
+import { PaymentCard, UserAddress, UserInfo } from '../types/user.types';
 import { DeliveryType } from '../types/enums';
 
 
 test.describe('E2E: User item purchase flow', () => {
 
   test('should allow user to add items to basket, and purchase', async ({ signUpUser, page }) => {
+    const item1Name = 'Carrot Juice (1000ml)';
+    const item2Name = 'Fruit Press';
     const userInfo: UserInfo = {
       email: chance.email({ domain: 'nazartest.com' }),
       password: chance.string({ length: 8 }),
       question: "Mother's maiden name?",
       answer: "sdet"
     }
-
     const userAddress: UserAddress = {
       country: 'USA',
       name: chance.name(),
@@ -27,9 +28,12 @@ test.describe('E2E: User item purchase flow', () => {
       city: chance.city(),
       state: chance.state()
     }
-
-    const item1Name = 'Carrot Juice (1000ml)';
-    const item2Name = 'Fruit Press';
+    const cardInfo: PaymentCard = {
+      name: chance.name(),
+      number: chance.cc({ length: 16, prefix: '4' }),
+      expirationMonth: chance.integer({ min: 1, max: 12 }).toString(),
+      expirationYear: chance.year({ min: 2080, max: 2090 }).toString()
+    }
 
     await signUpUser(userInfo);
 
@@ -63,7 +67,9 @@ test.describe('E2E: User item purchase flow', () => {
     await selectAddressPage.addNewAddress(userAddress);
     
     const selectDeliveryPage = await selectAddressPage.selectAddressByNameAndContinue(userAddress.name);
-    await selectDeliveryPage.selectDeliveryByTypeAndContinue(DeliveryType.FAST);
-    // TODO payment selection, page is not implemented yet
+    const paymentOptionsPage = await selectDeliveryPage.selectDeliveryByTypeAndContinue(DeliveryType.FAST);
+
+    await paymentOptionsPage.addNewCard(cardInfo)
+    // TODO card selection and review page, page is not implemented yet
   });
 });
