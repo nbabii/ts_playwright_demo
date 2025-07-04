@@ -1,4 +1,4 @@
-import { BasePage } from '../base/base-page';
+import { BasePage, step } from '../base/base-page';
 import { HeaderComponent } from '../components/page-header';
 import { type Locator, type Page } from '@playwright/test';
 import { PaymentOptionsPage } from './payment-page';
@@ -17,10 +17,12 @@ export class SelectDeliveryPage extends BasePage {
     return new HeaderComponent(this.page);
   }
 
+  @step('Open delivery method page')
   async open() {
     await this.page.goto('/#/delivery-method');
   }
 
+  @step('Select delivery by type and continue')
   async selectDeliveryByTypeAndContinue(type: string): Promise<PaymentOptionsPage> {
     await this.page.locator(this.getSelectDeliveryRadio.replace('DELIVERY', type)).click();
     await this.getContinueButton.click();

@@ -1,4 +1,4 @@
-import { BasePage } from '../base/base-page';
+import { BasePage, step } from '../base/base-page';
 import { HeaderComponent } from '../components/page-header';
 import { SelectAddressPage } from './address-page';
 import { type Locator, type Page } from '@playwright/test';
@@ -29,10 +29,12 @@ export class BasketPage extends BasePage {
     return this.getBasketItem.nth(index).locator(this.getBasketItemCountLocator);
   }
 
+  @step('Open basket page')
   async open() {
     await this.page.goto('/#/basket');
   }
 
+  @step('Proceed to checkout')
   async proceedToCheckout() : Promise<SelectAddressPage> {
     await this.getCheckoutBtn.click();
 

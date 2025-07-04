@@ -1,4 +1,4 @@
-import { BasePage } from '../base/base-page';
+import { BasePage, step } from '../base/base-page';
 import { HeaderComponent } from '../components/page-header';
 import { type Locator, type Page } from '@playwright/test';
 import { PaymentCard } from '../types/user.types';
@@ -30,10 +30,12 @@ export class PaymentOptionsPage extends BasePage {
     return new HeaderComponent(this.page);
   }
 
+  @step('Open payment options page')
   async open() {
     await this.page.goto('/#/payment/shop');
   }
 
+  @step('Add new payment card')
   async addNewCard(cardInfo: PaymentCard) {
     await this.getAddCardButton.click();
     await this.getCardNameInput.fill(cardInfo.name);
@@ -43,6 +45,7 @@ export class PaymentOptionsPage extends BasePage {
     await this.getSubmitButton.click();
   }
 
+  @step('Select payment method and continue')
   async selectPaymentAndContinue(name: string): Promise<OrderSummaryPage> {
     await this.page.locator(this.getSelectPaymentRadio.replace('PAYMENT', name)).click();
     await this.getContinueButton.click();

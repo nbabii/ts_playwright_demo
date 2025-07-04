@@ -1,4 +1,4 @@
-import { BasePage } from '../base/base-page';
+import { BasePage, step } from '../base/base-page';
 import { HeaderComponent } from '../components/page-header';
 import { type Locator, type Page } from '@playwright/test';
 import { UserAddress } from '../types/user.types';
@@ -36,10 +36,12 @@ export class SelectAddressPage extends BasePage {
     return new HeaderComponent(this.page);
   }
 
+  @step('Open address selection page')
   async open() {
     await this.page.goto('/#/address/select');
   }
 
+  @step('Add new address')
   async addNewAddress(address: UserAddress) {
     await this.getAddNewAddressBtn.click();
     await this.getCountryInput.fill(address.country);
@@ -52,6 +54,7 @@ export class SelectAddressPage extends BasePage {
     await this.getSubmitButton.click();
   }
 
+  @step('Select address by name and continue')
   async selectAddressByNameAndContinue(name: string): Promise<SelectDeliveryPage> {
     await this.page.locator(this.getSelectAddressRadio.replace('NAME', name)).click();
     await this.getContinueButton.click();
