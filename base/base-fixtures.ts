@@ -38,14 +38,17 @@ export const test = base.extend<BaseFixtures>({
 });
 
 export function step(stepName?: string) {
-  return function decorator(target: Function, context: ClassMethodDecoratorContext) {
-    return function replacementMethod(this: any, ...args: any) {
-      const name = `${stepName || (context.name as string)} (${this.constructor.name})`
+  return function decorator<T extends (...args: unknown[]) => unknown>(
+    target: T,
+    context: ClassMethodDecoratorContext
+  ) {
+    return function replacementMethod(this: object, ...args: Parameters<T>): ReturnType<T> {
+      const name = `${stepName || (context.name as string)} (${this.constructor.name})`;
       return test.step(name, async () => {
-        return await target.call(this, ...args)
-      })
-    }
-  }
+        return await target.apply(this, args);
+      }) as ReturnType<T>;
+    };
+  };
 }
 
 export { expect } from '@playwright/test';
