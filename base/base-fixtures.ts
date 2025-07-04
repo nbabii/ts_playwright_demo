@@ -1,4 +1,5 @@
 import { test as base } from '@playwright/test';
+import { BasePage } from './base-page';
 
 type BaseFixtures = {
   autoTimeLoggerFixture: void;
@@ -38,11 +39,11 @@ export const test = base.extend<BaseFixtures>({
 });
 
 export function step(stepName?: string) {
-  return function decorator<T extends (...args: unknown[]) => unknown>(
+  return function decorator<T extends (this: BasePage, ...args: unknown[]) => unknown>(
     target: T,
     context: ClassMethodDecoratorContext
   ) {
-    return function replacementMethod(this: object, ...args: Parameters<T>): ReturnType<T> {
+    return function replacementMethod(this: BasePage, ...args: Parameters<T>): ReturnType<T> {
       const name = `${stepName || (context.name as string)} (${this.constructor.name})`;
       return test.step(name, async () => {
         return await target.apply(this, args);
