@@ -1,5 +1,4 @@
-import { step } from '../base/base-fixtures';
-import { BasePage } from '../base/base-page';
+import { BasePage, step } from '../base/base-page';
 import { type Locator, type Page } from '@playwright/test';
 
 export class ProductItemComponent extends BasePage {

@@ -1,8 +1,7 @@
-import { BasePage } from '../base/base-page';
+import { BasePage, step } from '../base/base-page';
 import { HeaderComponent } from '../components/page-header';
 import { type Locator, type Page } from '@playwright/test';
 import { PaymentOptionsPage } from './payment-page';
-import { step } from '../base/base-fixtures';
 
 
 export class SelectDeliveryPage extends BasePage {

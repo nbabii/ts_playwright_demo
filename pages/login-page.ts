@@ -1,10 +1,10 @@
-import { BasePage } from '../base/base-page';
+import { BasePage, step } from '../base/base-page';
 import { HeaderComponent } from '../components/page-header';
 import { type Locator, type Page } from '@playwright/test';
 import { MainShopPage } from './main-page';
 import { SignupPage } from './signup-page';
 import { UserInfo } from '../types/user.types';
-import { step } from '../base/base-fixtures';
+
 
 export class LoginPage extends BasePage {
   readonly getRegisterBtn: Locator;
