@@ -5,9 +5,9 @@ import { test, expect } from '@playwright/test';
 import { MainShopPage } from '../pages/main-page';
 import { SignupPage } from '../pages/signup-page';
 
-test.describe('Test user sign_up flow', () => {
+test.describe('E2E: User signup flow', () => {
 
-  test('main page opened and user can navigate to sign up', async ({ page }) => {
+  test('should allow user to navigate to sign up from main page', async ({ page }) => {
     const mainPage = new MainShopPage(page);
     await mainPage.open();
     await mainPage.closeWlcmBannerIfPresent();
@@ -23,7 +23,7 @@ test.describe('Test user sign_up flow', () => {
     });
   });
 
-  test('user can fill signup form with correct data and register', async ({ page }) => {
+  test('should allow user to fill signup form with correct data and register', async ({ page }) => {
     const signupPage = new SignupPage(page);
 
     const userInfo = {

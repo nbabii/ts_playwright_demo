@@ -11,8 +11,8 @@ import { DeliveryType } from '../types/enums';
 test.describe('E2E: User item purchase flow', () => {
 
   test('should allow user to add items to basket, and purchase', async ({ signUpUser, page }) => {
-    const item1Name = 'Carrot Juice (1000ml)';
-    const item2Name = 'Fruit Press';
+    const item1Name: string = 'Carrot Juice (1000ml)';
+    const item2Name: string = 'Fruit Press';
     const userInfo: UserInfo = {
       email: chance.email({ domain: 'nazartest.com' }),
       password: chance.string({ length: 8 }),
@@ -30,7 +30,7 @@ test.describe('E2E: User item purchase flow', () => {
     }
     const cardInfo: PaymentCard = {
       name: chance.name(),
-      number: chance.cc({type: 'mc'}),
+      number: chance.cc({ type: 'mc' }),
       expirationMonth: chance.integer({ min: 1, max: 12 }).toString(),
       expirationYear: chance.year({ min: 2080, max: 2090 }).toString()
     }
@@ -47,13 +47,15 @@ test.describe('E2E: User item purchase flow', () => {
     await mainPage.getProductItemComponent().addProductToBasket(item1Name);
 
     await expect(mainPage.getHeaderComponent().getBasketItemsCount).toHaveText('1');
+    const item1Price: number = await mainPage.getProductItemComponent().getItemPrice(item1Name);
 
     await mainPage.getHeaderComponent().closeSearch();
     await mainPage.getHeaderComponent().searchItem(item2Name);
     await mainPage.getProductItemComponent().addProductToBasket(item2Name);
 
     await expect(mainPage.getHeaderComponent().getBasketItemsCount).toHaveText('2');
-    
+    const item2Price: number = await mainPage.getProductItemComponent().getItemPrice(item2Name);
+
     const basketPage = await mainPage.getHeaderComponent().navigateToBasket();
 
     await expect(basketPage.getBasketItem).toHaveCount(2);
@@ -65,12 +67,31 @@ test.describe('E2E: User item purchase flow', () => {
 
     const selectAddressPage = await basketPage.proceedToCheckout();
     await selectAddressPage.addNewAddress(userAddress);
-    
+
     const selectDeliveryPage = await selectAddressPage.selectAddressByNameAndContinue(userAddress.name);
     const paymentOptionsPage = await selectDeliveryPage.selectDeliveryByTypeAndContinue(DeliveryType.FAST);
 
     await paymentOptionsPage.addNewCard(cardInfo);
-    await paymentOptionsPage.selectPaymentAndContinue(cardInfo.name);
-    // TODO review page, page is not implemented yet
+    const orderSummaryPage = await paymentOptionsPage.selectPaymentAndContinue(cardInfo.name);
+
+    await expect(orderSummaryPage.getDeliveryInfoCard).toContainText(userAddress.address);
+    await expect(orderSummaryPage.getDeliveryInfoCard).toContainText(userAddress.city);
+    await expect(orderSummaryPage.getDeliveryInfoCard).toContainText(userAddress.state);
+    await expect(orderSummaryPage.getDeliveryInfoCard).toContainText(userAddress.zip);
+    await expect(orderSummaryPage.getDeliveryInfoCard).toContainText(userAddress.mobile);
+
+    await expect(orderSummaryPage.getPaymentInfoCard).toContainText(cardInfo.name);
+    await expect(orderSummaryPage.getPaymentInfoCard).toContainText(cardInfo.number.slice(-4));
+
+    const itemsPrice: number = item1Price + item2Price;
+    const totalPrice: number = itemsPrice + 0.50;
+    await expect(orderSummaryPage.getItemsOrderSummaryCard).toHaveText(`${itemsPrice.toFixed(2)}¤`);
+    await expect(orderSummaryPage.getDeliveryOrderSummaryCard).toHaveText("0.50¤");
+    await expect(orderSummaryPage.getPromotionOrderSummaryCard).toHaveText("0.00¤");
+    await expect(orderSummaryPage.getTotalPriceOrderSummaryCard).toHaveText(`${totalPrice.toFixed(2)}¤`);
+
+    const orderCompletePage = await orderSummaryPage.completeOrder();
+
+    await expect(orderCompletePage.getOrderCompleteMsg).toHaveText('Thank you for your purchase!');
   });
 });

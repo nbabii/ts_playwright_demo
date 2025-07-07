@@ -6,9 +6,9 @@ import { test, expect } from '../api-fixtures/signup-fixture';
 import { LoginPage } from '../pages/login-page';
 
 
-test.describe('Test user log in flow', () => {
+test.describe('E2E: User log in flow', () => {
 
-  test('user can login with existed valid credentials', async ({ signUpUser, page }) => {
+  test('should allow user to login with existed valid credentials', async ({ signUpUser, page }) => {
     const userInfo = {
       email: chance.email({ domain: 'nazartest.com' }),
       password: chance.string({ length: 8 }),
@@ -26,27 +26,29 @@ test.describe('Test user log in flow', () => {
     const mainPage = await loginPage.loginUser(userInfo);
 
     expect(await mainPage.getHeaderComponent().isUserLoggedIn()).toBeTruthy();
-    
+
   });
 
-    test('user can NOT login with incorrect credentials', async ({ signUpUser, page }) => {
-    const userInfo = {
-      email: chance.email({ domain: 'nazartest.com' }),
-      password: chance.string({ length: 8 }),
-      question: "Mother's maiden name?",
-      answer: "sdet"
-    }
+  test('should NOT allow user to login with incorrect credentials',
+    { tag: '@negative' },
+    async ({ signUpUser, page }) => {
 
-    await signUpUser(userInfo);
+      const userInfo = {
+        email: chance.email({ domain: 'nazartest.com' }),
+        password: chance.string({ length: 8 }),
+        question: "Mother's maiden name?",
+        answer: "sdet"
+      }
 
-    const loginPage = new LoginPage(page);
-    await loginPage.open();
+      await signUpUser(userInfo);
 
-    userInfo.password += '1';
+      const loginPage = new LoginPage(page);
+      await loginPage.open();
 
-    await loginPage.loginUser(userInfo);
+      userInfo.password += '1';
 
-    expect(await loginPage.getErrorMsgText(), "Login error message should be visible").toContain('Invalid email or password');
-    
+      await loginPage.loginUser(userInfo);
+
+      expect(await loginPage.getErrorMsgText(), "Login error message should be visible").toContain('Invalid email or password');
   });
 });
