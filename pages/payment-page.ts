@@ -50,6 +50,6 @@ export class PaymentOptionsPage extends BasePage {
     await this.page.locator(this.getSelectPaymentRadio.replace('PAYMENT', name)).click();
     await this.getContinueButton.click();
 
-    return new PaymentOptionsPage(this.page);
+    return new OrderSummaryPage(this.page);
   }
 }
